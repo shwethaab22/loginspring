@@ -1,5 +1,6 @@
 package com.login.control;
 
+import org.apache.catalina.User;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -78,6 +80,15 @@ public class UserController {
     @PostMapping("/signup")
     public user signup(@RequestBody user loginRequest) {
     	return userRepository.save(loginRequest);
+    }
+    
+    @PutMapping("/updatepassword/{email}/{password}")
+    public String passwordupdate(@PathVariable("email") String email,@PathVariable("password") String password)
+    {
+    	user user1=userRepository.findByEmail(email);
+    	user1.setPassword(password);
+    	userRepository.save(user1);
+    	return JSONObject.quote("password updated");
     }
     
     
